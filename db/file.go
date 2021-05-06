@@ -2,6 +2,7 @@ package db
 
 import (
 	mydb "Filestore-SERVER/db/mysql"
+	"database/sql"
 	"fmt"
 )
 
@@ -32,5 +33,5 @@ func OnFileUploadFinished(filehash string, filename string, filesize int64, file
 
 type TableFile struct{
 	FileHash string
-
+	FileName sql.NullString
 }
