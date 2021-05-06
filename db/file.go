@@ -4,6 +4,7 @@ import (
 	mydb "Filestore-SERVER/db/mysql"
 	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // OnFileUploadFinished : 文件上传完成，保存meta
@@ -34,4 +35,25 @@ func OnFileUploadFinished(filehash string, filename string, filesize int64, file
 type TableFile struct{
 	FileHash string
 	FileName sql.NullString
+	FileSize sql.NullInt64
+	FileAddr sql.NullString
+}
+
+// GetFileMeta 从mysql获取文件元信息
+func GetFileMeta(filehash string) (*TableFile,error) {
+	stmt,err:=mydb.DBConn().Prepare(
+		"select file_sha1,file_addr,file_name,file_size from tbl_file where file_sha1=? and status=1 limit 1")
+	if err != nil{
+		fmt.Println(err.Error())
+		return nil,err
+	}
+	defer stmt.Close()
+
+	tfile:=TableFile{}
+	err=stmt.QueryRow(filehash).Scan(
+		&tfile.FileHash,&tfile.FileAddr,&tfile.FileName,&tfile.FileSize)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	return &tfile,nil
 }
