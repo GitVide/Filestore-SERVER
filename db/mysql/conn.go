@@ -55,7 +55,6 @@ func ParseRows(rows *sql.Rows) []map[string]interface{} {
 	return records
 }
 
-
 func checkErr(err error) {
 	if err != nil {
 		log.Fatal(err)

@@ -1,10 +1,9 @@
 package handler
 
 import (
+	dblayer "Filestore-SERVER/db"
 	"Filestore-SERVER/util"
-	dblayer "filestore-server/db"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -17,13 +16,13 @@ const (
 // SignupHandler : 处理用户注册请求
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		data, err := ioutil.ReadFile("./static/view/signup.html")
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		w.Write(data)
-		//http.Redirect(w, r, "/static/view/signup.html", http.StatusFound)
+		// data, err := ioutil.ReadFile("./static/view/signup.html")
+		// if err != nil {
+		// 	w.WriteHeader(http.StatusInternalServerError)
+		// 	return
+		// }
+		// w.Write(data)
+		http.Redirect(w, r, "/static/view/signup.html", http.StatusFound)
 		return
 	}
 	r.ParseForm()
